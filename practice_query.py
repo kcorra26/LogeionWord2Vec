@@ -1,7 +1,7 @@
 import sys
 import os
-#import xml.dom.minidom as md 
-from xml.dom import minidom 
+from xml.dom import minidom  # wondering if i should use lxml instead, but there
+# should be a way to define the entities that are throwing errors with the og file. 
 import io
 import re
 import shutil
@@ -15,7 +15,7 @@ sys.setdefaultencoding('utf8')
 
 def main(): 
     #args = sys.argv[1:]
-    filename = "SenAgLatPractice.xml"
+    filename = "SenAgLat.xml"
     names = filename.split(".")
     nm = names[0] # find the original name of the file
 
@@ -28,10 +28,10 @@ def main():
     dbh = sqlite3.connect("LatinLexicon.sqlite")
     dbc = dbh.cursor()
 
-    bibliography = file.getElementsByTagName("w") #extracting only the word tags
-    #for num, word in enumerate(bibliography):  for checking
+    bibliography = file.getElementsByTagName("w") 
+
     for word in bibliography:
-        if word.hasAttribute("id"):
+        if (word.hasAttribute("id") and ((word.parentNode).tagName == "l")):
             token = word.getAttribute("id")
 
             dbc.execute("SELECT Lexicon.lemma,Lexicon.code FROM tokens,parses,Lexicon WHERE tokens.tokenid = ? and tokens.tokenid=parses.tokenid and parses.lex=Lexicon.lexid order by parses.prob desc;", (token,))
@@ -51,7 +51,7 @@ def main():
             word.setAttribute("lemma", lemma)
             word.setAttribute("pos", pos)
 
-        #if num == 100:
+        #if num == 30:
             #break
 
     with open(copyname, "w") as f: #write changes into copied xml file
