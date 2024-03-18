@@ -28,8 +28,7 @@ def parse_with_et():
             # Extract the lemma of each word
             if word.get('lemma'):  # NOTE: could also check its tag and exclude if pos = preposition or something
                 current_sentence.append(word.get('lemma'))
-            
-            # Check for punctuation in the tail text of the word
+                
             if word.tail and ('.' in word.tail or '?' in word.tail): # NOTE: if Greek, need to add semicolon
                 # We found a period in the tail text
                 sentences.append(current_sentence)
