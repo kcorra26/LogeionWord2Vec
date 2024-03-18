@@ -1,3 +1,4 @@
+!/usr/local/bin/python3 *******FIGURE THIS OUT
 import sys
 import os
 from xml.dom import minidom  # wondering if i should use lxml instead, but there
@@ -9,7 +10,6 @@ import difflib
 import unicodedata
 import sqlite3
 import gzip
-import sys
 reload(sys)
 sys.setdefaultencoding('utf8')
 
@@ -23,10 +23,11 @@ def main():
     cmd = "cp " + filename + " " + copyname
     
     copy = os.system(cmd)
-    file = minidom.parse(copyname)
+    file = minidom.parse(copyname) 
 
     dbh = sqlite3.connect("LatinLexicon.sqlite")
     dbc = dbh.cursor()
+    # could only look at things in body of the text 
 
     bibliography = file.getElementsByTagName("w") 
 
@@ -39,9 +40,15 @@ def main():
             if result == None: # only two cases where this applies, we can do something different with it if needed
                 dbc.execute("SELECT lemma,code from parses where tokenid=? order by prob desc;",(token,))
                 result = dbc.fetchone()
-                if result != None:
-                    lemma = result[0] #just unknown but shows up funky
+                if result != None: 
+                    # either:
+                    # unknown word, in which case: 
+                    lemma = result[0]
+                    # if unknown,
                     pos = "----------" 
+                    # else, either a segment or legit lema 
+                    pos = result[1]
+                    # take lemma out of lemma, pos out of pos field 
                 else:
                     print("not found in tokens or parses")
             else: 
