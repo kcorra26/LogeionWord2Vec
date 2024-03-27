@@ -1,0 +1,3 @@
+[submodule "Latinfiles"]
+	path = Latinfiles
+	url = git@github.com:helmadik/Latinfiles.git
