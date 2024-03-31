@@ -6,7 +6,7 @@ through the Perseus Classical collection.
 
 ## Preprocessing: 
 The script parses the xml files containing the classical texts and creates a new file for each one. For each word, 
-the script accesses the LatinLexicon.sqlite database and adds the lemma and part of speech associated with the token 
+the script queries the LatinLexicon.sqlite database and adds the lemma and part of speech associated with the token 
 as attributes of the word tag in the new file.
 
 ## The Model:
